@@ -1,0 +1,19 @@
+# DaST — Dependencies (HPC)
+#
+# 1. Load modules and create env:
+#       module load cuda python
+#       python -m venv $HOME/envs/dast && source $HOME/envs/dast/bin/activate
+#
+# 2. Install PyTorch (CUDA-matched), then everything else:
+#       pip install --no-cache-dir torch torchvision --extra-index-url https://download.pytorch.org/whl/cu121
+#       pip install --no-cache-dir -r docs/requirements.txt
+#
+
+torch
+torchvision
+numpy
+advertorch
+foolbox>=3.0
+scikit-learn
+joblib
+xlwt
