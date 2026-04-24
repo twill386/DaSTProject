@@ -7,15 +7,6 @@ import sys
 import xlwt
 import random
 import numpy as np
-import torch
-import torch.autograd.gradcheck as _gradcheck
-if not hasattr(_gradcheck, 'zero_gradients'):
-    def _zero_gradients(x):
-        if isinstance(x, torch.Tensor):
-            if x.grad is not None:
-                x.grad.detach_()
-                x.grad.zero_()
-    _gradcheck.zero_gradients = _zero_gradients
 from advertorch.attacks import LinfBasicIterativeAttack
 import joblib
 # from utils import load_data
