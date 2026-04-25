@@ -7,3 +7,5 @@ saved_model/*
 venv/
 ENV/
 env/
+
+testRuns/

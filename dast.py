@@ -35,15 +35,16 @@ nz = 128
 
 class Logger(object):
     def __init__(self, filename='default.log', stream=sys.stdout):
-	    self.terminal = stream
-	    self.log = open(filename, 'a')
+        self.terminal = stream
+        self.log = open(filename, 'a')
 
     def write(self, message):
-	    self.terminal.write(message)
-	    self.log.write(message)
+        self.terminal.write(message)
+        self.log.write(message)
 
     def flush(self):
-	    pass
+        self.terminal.flush()
+        self.log.flush()
 
 sys.stdout = Logger('imitation_network_model.log', sys.stdout)
 
