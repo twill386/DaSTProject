@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=DaSTProject1
-#SBATCH --time=04:00:00
+#SBATCH --time=24:00:00
 #SBATCH --partition=gpu-preempt
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
@@ -11,4 +11,4 @@
 
 source /work/pi_csc592_uri_edu/Thomas/DaSTProject/.venv/bin/activate
 cd /work/pi_csc592_uri_edu/Thomas/DaSTProject
-python dast.py --dataset=mnist --niter=10 --batchSize=500 --alpha=0.2 --beta=0.1 --G_type=1 --save_folder=saved_model
+python dast.py --dataset=mnist --niter=200 --batchSize=500 --alpha=0.2 --beta=0.1 --G_type=1 --save_folder=saved_model

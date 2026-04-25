@@ -7,8 +7,7 @@ Testing on the MNIST dataset. Using the following parameters (niter is the amnt 
 
 python dast.py --dataset=mnist --niter=10 --batchSize=500 --alpha=0.2 --beta=0.1 --G_type=1 --save_folder=saved_model
 
-### Error 1
-When running the first test an error for the function zero_gradients occured. This was removed from Pytorch in version 2.x. advertorch is an older library that still tries to import it. This was fixed by injecting the function into torch prior to advertorch loading. 
+### Results
 
-### Error 2
-Ran into the same issue when running the test job again. Fixed by removing the previous injected function and running this on the cluster to disable an import within the advertorch package that is unused and causing the issue: sed -i 's/from .fast_adaptive_boundary import FABAttack/# from .fast_adaptive_boundary import FABAttack/' /work/pi_csc592_uri_edu/Thomas/.venv/lib/python3.12/site-packages/advertorch/attacks/__init__.py
+# Test 2
+Testing on MNIST dataset. Using the following parameters. Increased Epoch size for test 2 to 200 epochs

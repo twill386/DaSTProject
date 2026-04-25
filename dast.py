@@ -452,7 +452,8 @@ for epoch in range(opt.niter):
                     errD.item(), errD_prob.item(), errG.item(), D_G_z1, D_G_z2, loss_imitate.item(), loss_diversity.item()))
 
     # Prints 10x10 grid of the synthetic images generated
-    vutils.save_image(data[:100].detach(), 'images/epoch_%04d.png' % epoch, normalize=True, nrow=10)
+    if epoch % 10 == 0:
+        vutils.save_image(data[:100].detach(), 'images/epoch_%04d.png' % epoch, normalize=True, nrow=10)
 
     ################################################
     # estimate the attack success rate of trained D:
