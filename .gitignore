@@ -1,3 +1,9 @@
 memory/*
 memory/
 saved_model/*
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
