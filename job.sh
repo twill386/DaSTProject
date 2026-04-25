@@ -10,6 +10,6 @@
 #SBATCH --error=logs/error-%j.txt
 #SBATCH --out=logs/out-%j.txt
 
-source /work/pi_csc592_uri_edu/Thomas/.venv/bin/activate
+source /work/pi_csc592_uri_edu/Thomas/DaSTProject/.venv/bin/activate
 cd /work/pi_csc592_uri_edu/Thomas/DaSTProject
 python dast.py --dataset=mnist --niter=10 --batchSize=500 --alpha=0.2 --beta=0.1 --G_type=1 --save_folder=saved_model

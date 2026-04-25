@@ -1,8 +1,42 @@
-torch
-torchvision
-numpy
-advertorch
-foolbox>=3.0
-scikit-learn
-joblib
-xlwt
+# DaST — Dependencies (HPC / Unity Cluster)
+# Pinned to match the working cluster environment (Python 3.12, CUDA 12.x)
+#
+# ============================================================
+# SETUP — run once on the cluster from the project root
+# ============================================================
+#
+# 1. Create a project-local venv:
+#       cd /work/pi_csc592_uri_edu/Thomas/DaSTProject
+#       python3 -m venv .venv
+#       source .venv/bin/activate
+#
+# 2. Install PyTorch (CUDA 12.1):
+#       pip install --no-cache-dir torch==2.10.0 torchvision==0.25.0 --extra-index-url https://download.pytorch.org/whl/cu121
+#
+# 3. Install remaining dependencies:
+#       pip install --no-cache-dir -r docs/requirements.txt
+#
+# 4. Patch advertorch for PyTorch 2.x compatibility (zero_gradients was removed):
+#       python3 -c "
+#       path = '.venv/lib/python3.12/site-packages/advertorch/attacks/fast_adaptive_boundary.py'
+#       with open(path) as f:
+#           content = f.read()
+#       content = content.replace(
+#           'from torch.autograd.gradcheck import zero_gradients',
+#           'try:\n    from torch.autograd.gradcheck import zero_gradients\nexcept ImportError:\n    def zero_gradients(x):\n        if hasattr(x, \"grad\") and x.grad is not None:\n            x.grad.detach_()\n            x.grad.zero_()'
+#       )
+#       with open(path, 'w') as f:
+#           f.write(content)
+#       print('Done')
+#       "
+# ============================================================
+
+# torch and torchvision installed separately above (step 2)
+torch==2.10.0
+torchvision==0.25.0
+numpy==2.4.2
+foolbox==3.3.4
+scikit-learn==1.8.0
+joblib==1.5.3
+advertorch==0.2.3
+xlwt==1.3.0
