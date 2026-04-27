@@ -55,8 +55,8 @@ if torch.cuda.is_available() and not opt.cuda:
     print("WARNING: You have a CUDA device, so you should probably run with \
          --cuda")
 
-testset = torchvision.datasets.MNIST(root='~/rm46_scratch/dataset/', train=False,
-                                     download=False,
+testset = torchvision.datasets.MNIST(root='dataset/', train=False,
+                                     download=True,
                                      transform=transforms.Compose([
                                         transforms.ToTensor(),
                                      ]))
@@ -216,10 +216,10 @@ elif opt.mode == 'white':
     attack_net = target_net
 elif opt.mode == 'dast':
     attack_net = Net_l().to(device)
+    # Change the file path to the model you want to evaluate
     state_dict = torch.load(
-        'saved_model/netD_epoch_848.pth')                         # choose your saved dast model
-    # attack_net = nn.DataParallel(attack_net)
-    attack_net.load_state_dict(state_dict)
+        'saved_model/netD_epoch_52.pth')                          # choose your saved dast model
     attack_net = nn.DataParallel(attack_net)
+    attack_net.load_state_dict(state_dict)
 
 test_adver(attack_net, target_net, opt.adv, opt.target)
