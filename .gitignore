@@ -8,4 +8,6 @@ venv/
 ENV/
 env/
 
-testRuns/
+# Expirement Data
+saved_models_01/
+saved_models_02/
