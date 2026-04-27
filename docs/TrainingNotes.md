@@ -37,4 +37,14 @@ l2 distance:  4.1055
 ### Notes
 The substitue model classifies real MNIST images correctly 68.71% of the time despite being trained entirely on GAN-generated data showing that the generator was able to cover a reasonable portion of input space. Only 7.62% of the adversarial examples crafted from the substitute model fool the target model. This was kind of expected considering the accuracy gap. The average L2 perturbation distance of 4.1055 shows that meaningful perturbations were being used however they were not aligned well enough with the targets decision boundary to be effective.
 
+## PGD
+
+### Results (expirements/evaluation/PGD/run_02_PGD.txt)
+Accuracy of the network on netD: 68.71 %
+Attack success rate: 83.55 %
+l2 distance:  5.0000 
+
+### Notes
+The attack success rate jumped massively to 83.55% when compared to 7.62% with FGSM. This shows PGD's iterative take is more effective at exploiting the substitute model. The average L2 perturbation distance was 5.00 meaning PGD used it's full perturbation budget on most images. This adds up since it runs for 500 iterations, attempting to maximize the attack while FGSM takes a single step.
+
 
