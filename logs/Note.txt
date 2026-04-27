@@ -1,0 +1,2 @@
+Stores errors and output of current run. All of my logs for past
+training and testing jobs have been moved to [foldername]

@@ -1,24 +1,39 @@
-# DaST — Dependencies (HPC / Unity Cluster)
-# Pinned to match the working cluster environment (Python 3.12, CUDA 12.x)
+# DaST — Dependencies
+# Use Python 3.12 with the following dependency versions. Confirmed working
+# locally (GPU) and on HPC clusters (Unity, CUDA 12.1, PyTorch 2.10.0).
+#
+# PyTorch's CUDA builds are not on PyPI — they live on a separate index at
+# download.pytorch.org/whl. The --extra-index-url line below tells pip to
+# also check that index, so everything installs in one step.
+#
+# Currently configured for CUDA 12.1. Check your version with: nvidia-smi
+# Then update the cu tag in --extra-index-url and torch/torchvision to match:
+#
+#   CUDA 11.3  →  cu113   torch==1.12.0  torchvision==0.13.0  (original authors, Python 3.9)
+#   CUDA 11.8  →  cu118   torch==2.0.0   torchvision==0.15.0  (Python 3.12)
+#   CUDA 12.1  →  cu121   torch==2.10.0  torchvision==0.25.0  (current setup, Python 3.12)
+#   CUDA 12.4  →  cu124   torch==2.10.0  torchvision==0.25.0  (Python 3.12)
 #
 # ============================================================
-# SETUP — run once on the cluster from the project root
+# SETUP — run once from the project root
 # ============================================================
 #
-# 1. Create a project-local venv:
-#       cd /work/pi_csc592_uri_edu/Thomas/DaSTProject
+# 1. Create a virtual environment:
 #       python3 -m venv .venv
-#       source .venv/bin/activate
+#       source .venv/bin/activate          # Mac/Linux
+#       .venv\Scripts\activate             # Windows
 #
-# 2. Install PyTorch (CUDA 12.1):
-#       pip install --no-cache-dir torch==2.10.0 torchvision==0.25.0 --extra-index-url https://download.pytorch.org/whl/cu121
+#    On HPC clusters, load your Python and CUDA modules first:
+#       module load python cuda
 #
-# 3. Install remaining dependencies:
+# 2. Install all dependencies in one step:
 #       pip install --no-cache-dir -r docs/requirements.txt
 #
-# 4. Patch advertorch for PyTorch 2.x compatibility (zero_gradients was removed):
+# 3. Patch advertorch for PyTorch 2.x compatibility (zero_gradients was removed).
+#    Run this from the project root with the venv active:
 #       python3 -c "
-#       path = '.venv/lib/python3.12/site-packages/advertorch/attacks/fast_adaptive_boundary.py'
+#       import advertorch, os
+#       path = os.path.join(os.path.dirname(advertorch.__file__), 'attacks', 'fast_adaptive_boundary.py')
 #       with open(path) as f:
 #           content = f.read()
 #       content = content.replace(
@@ -31,7 +46,7 @@
 #       "
 # ============================================================
 
-# torch and torchvision installed separately above (step 2)
+--extra-index-url https://download.pytorch.org/whl/cu121
 torch==2.10.0
 torchvision==0.25.0
 numpy==2.4.2
