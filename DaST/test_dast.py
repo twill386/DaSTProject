@@ -63,7 +63,7 @@ testset = torchvision.datasets.MNIST(root='dataset/', train=False,
 
 # data_list = [i for i in range(0, 10000)]
 testloader = torch.utils.data.DataLoader(testset, batch_size=512,
-                                         shuffle=False, num_workers=16)
+                                         shuffle=False, num_workers=4)
 
 
 device = torch.device("cuda:0" if opt.cuda else "cpu")
