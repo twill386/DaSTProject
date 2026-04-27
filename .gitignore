@@ -1,6 +1,6 @@
 memory/*
 memory/
-saved_model/*
+saved_model/
 
 # Virtual environments
 .venv/
