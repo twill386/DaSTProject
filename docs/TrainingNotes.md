@@ -47,4 +47,21 @@ l2 distance:  5.0000
 ### Notes
 The attack success rate jumped massively to 83.55% when compared to 7.62% with FGSM. This shows PGD's iterative take is more effective at exploiting the substitute model. The average L2 perturbation distance was 5.00 meaning PGD used it's full perturbation budget on most images. This adds up since it runs for 500 iterations, attempting to maximize the attack while FGSM takes a single step.
 
+## BIM
+
+### Results (expirements/evaluation/PGD/run_02_BIM.txt)
+Accuracy of the network on netD: 68.71 %
+Attack success rate: 81.34 %
+l2 distance:  4.7759 
+
+### Notes
+
+## CW
+
+### Results (expirements/evaluation/PGD/run_02_CW.txt)
+Accuracy of the network on netD: 68.71 %
+Attack success rate: 2.45 %
+l2 distance:  0.8923 
+
+### Notes
 

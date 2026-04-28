@@ -23,13 +23,12 @@
 #       source .venv/bin/activate          # Mac/Linux
 #       .venv\Scripts\activate             # Windows
 #
-#    On HPC clusters, load your Python and CUDA modules first:
-#       module load python cuda
-#
 # 2. Install all dependencies in one step:
 #       pip install --no-cache-dir -r docs/requirements.txt
 #
-# 3. Patch advertorch for PyTorch 2.x compatibility (zero_gradients was removed).
+# 3. Once dependencies are installed patch advertorch for PyTorch 2.x 
+#    compatibility (zero_gradients was removed). This removes zero_gradients 
+#    from advertorch making it compatible with my dependency versions.
 #    Run this from the project root with the venv active:
 #       python3 -c "
 #       import advertorch, os
