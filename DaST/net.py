@@ -1,3 +1,4 @@
+# Neural network architecture definitions for the surrogate models (small, medium, large) used in DaST training.
 '''VGG11/13/16/19 in Pytorch.'''
 import torch
 import torch.nn as nn
@@ -22,6 +23,7 @@ class Net_s(nn.Module):
         x = self.fc2(x)
         return F.log_softmax(x, dim=1)
 
+# Target Model
 class Net_m(nn.Module):
     def __init__(self):
         self.number = 0
@@ -49,7 +51,7 @@ class Net_m(nn.Module):
     def get_number(self):
         return self.number
 
-
+# Substitue Model
 class Net_l(nn.Module):
     def __init__(self):
         super(Net_l, self).__init__()

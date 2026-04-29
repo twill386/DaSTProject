@@ -107,7 +107,7 @@ Each epoch runs `batch_num` inner iterations:
 
 ## How to Run
 
-### Environment (original paper)
+### Environment used in original paper
 ```
 Python 3.9.12
 PyTorch 1.12.0
@@ -115,12 +115,9 @@ CUDA 11.3.1
 GPU: A40
 ```
 
-### Dependencies to install
-```bash
-pip install torch torchvision advertorch foolbox xlwt scikit-learn
-```
+### Dependencies they used
+torch torchvision advertorch foolbox xlwt scikit-learn
 
-> **Note:** `dast.py` uses `from sklearn.externals import joblib` which was removed after sklearn 0.23. Replace with `import joblib` if you get an ImportError.
 
 ### Train a DaST substitute (MNIST target)
 ```bash
@@ -139,6 +136,12 @@ Uses the sklearn model as the black-box target instead of `net_m.pth`.
 python evaluation.py --mode=dast --adv=FGSM --cuda
 ```
 
+or
+
+```bash
+python test_dast.py --mode=dast --adv=FGSM --cuda
+```
+
 `--mode` options:
 - `white` — white-box attack on the real target (best possible ASR, upper bound)
 - `black` — attacks using `net_l.pth` trained on real data (baseline)
@@ -147,10 +150,6 @@ python evaluation.py --mode=dast --adv=FGSM --cuda
 `--adv` options: `FGSM`, `BIM`, `PGD`, `CW`
 
 Add `--target` for targeted attacks (random target class).
-
-> **Note:** `evaluation.py` hardcodes `root='/data/dataset/'` — change to `root='dataset/'` to use the local MNIST copy.
-
-> **Note:** `evaluation.py` loads `saved_model_2/netD_epoch_670.pth` for `dast` mode. Change to your actual saved model path after training.
 
 ---
 
@@ -167,44 +166,7 @@ Add `--target` for targeted attacks (random target class).
 
 ---
 
-## Training Your Own Model — Checklist
-
-1. Install dependencies (see above)
-2. Fix `sklearn.externals` import if needed
-3. Fix dataset path in `evaluation.py` (`/data/dataset/` → `dataset/`)
-4. Run `python dast.py --dataset=mnist --beta=0.1 --G_type=1 --batchSize=500`
-5. Check `saved_model/` for checkpoint files as training progresses
-6. Edit the `dast` branch in `evaluation.py` to load your checkpoint path
-7. Run `python evaluation.py --mode=dast --adv=FGSM --cuda` and compare against `--mode=white` and `--mode=black`
-
----
-
-## CIFAR-10 Notes
-
-`dast_cifar10.py` extends the method to CIFAR-10 (32×32 RGB images).
-
-- Target model: `pretrained/vgg16cifar10.pth` (VGG16, ~93.9% acc)
-- Substitute model: VGG13 (`netD`)
-- Uses `Generator_cifar10` (output size 32×32 with 3 channels)
-- Attacks via `foolbox` L2BasicIterativeAttack
-- **Training is unstable** — the log file `dast_cifar10.log` shows one collapsed run and one successful run that reached ~80% ASR at epoch 50 (DaST-P). The authors acknowledge this.
-
----
-
-## Known Issues / Compatibility Warnings
-
-| Issue | Location | Fix |
-|-------|----------|-----|
-| `sklearn.externals.joblib` removed | `dast.py` line 11 | Replace with `import joblib` |
-| Dataset path hardcoded to cluster | `evaluation.py` line 59, `test_dast.py` line 58 | Change to `dataset/` |
-| Saved model path hardcoded | `evaluation.py` line 204 | Update to your actual checkpoint |
-| CUDA required | Throughout | All `.cuda()` calls are unconditional; CPU-only runs will fail |
-| Performance is non-deterministic | All scripts | Authors note results vary machine to machine even with seeds |
-| `xlwt` writes `.xls` output | `dast.py` | Log of per-epoch accuracy; benign |
-
----
-
-## Results Context (from paper / logs)
+## Results from the paper
 
 - MNIST DaST-P: achieves competitive attack success rate vs. black-box baseline trained on real data
 - Azure attack: 98.35% misclassification rate on Microsoft Azure remote model (from paper)

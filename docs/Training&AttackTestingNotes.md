@@ -25,7 +25,7 @@ Accuracy of the network on netD: 71.70 %
 ---
 
 # Attack Tests
-All attack tests are evaluated on model netD_epoch_52.pth from Training Test 2 (expirements/run_02_test/saved_models/netD_epoch_52.pth). This model produced the best Attack success rate and Accuracy of the network on netD at epoch 52 during training. Due to time constraints I was only able to train the model up to 80 epochs so for a reference a well trained MNIST model is around 99% accurate.
+All attack tests are evaluated on model netD_epoch_52.pth from Training Test 2 (expirements/run_02_test/saved_models/netD_epoch_52.pth). This model produced the best Attack success rate and Accuracy of the network on netD at epoch 52 during training. Due to time constraints I was only able to train the model up to 80 epochs so for a reference a well trained MNIST model is around 99% accurate. The accuracy of the model I trained on netD is 68.71% meaning it classified real MNIST images correctly 68.71% of the time despite being trained entirely on GAN-generated data. This shows that the generator was able to cover a reasonable portion of input space.
 
 ## FGSM
 
@@ -35,7 +35,7 @@ Attack success rate: 7.62 %
 l2 distance:  4.1055 
 
 ### Notes
-The substitue model classifies real MNIST images correctly 68.71% of the time despite being trained entirely on GAN-generated data showing that the generator was able to cover a reasonable portion of input space. Only 7.62% of the adversarial examples crafted from the substitute model fool the target model. This was kind of expected considering the accuracy gap. The average L2 perturbation distance of 4.1055 shows that meaningful perturbations were being used however they were not aligned well enough with the targets decision boundary to be effective.
+Only 7.62% of the adversarial examples crafted from the substitute model fool the target model. This was kind of expected considering the accuracy gap. The average L2 perturbation distance of 4.1055 shows that meaningful perturbations were being used however they were not aligned well enough with the targets decision boundary to be effective.
 
 ## PGD
 
@@ -55,6 +55,7 @@ Attack success rate: 81.34 %
 l2 distance:  4.7759 
 
 ### Notes
+BIM came in at 81.34% which is very close to PGD's 83.55%. This makes sense since both attacks are iterative and work similarly, taking many small steps to build up the perturbation. The slight gap between them is likely because PGD uses a random start while BIM always starts from the original image. The average L2 distance of 4.7759 is just under PGD's 5.00, showing it used most of its budget but not quite all of it.
 
 ## CW
 
@@ -64,4 +65,4 @@ Attack success rate: 2.45 %
 l2 distance:  0.8923 
 
 ### Notes
-
+CW had the worst attack success rate at only 2.45%, even lower than FGSM's 7.62%. The L2 distance of 0.8923 was by far the smallest of all four attacks showing CW was finding very small precise perturbations. The issue with this attack is that those perturbations were tightly fit to the substitute model, as CW is designed to find the minimal perturbation, so it did not transfer well to the target.

@@ -1,3 +1,4 @@
+# Main training script for DaST. Trains a surrogate model using a generator to produce synthetic data, then transfers adversarial examples to a black-box target model.
 from __future__ import print_function
 import argparse
 import os
@@ -121,7 +122,9 @@ testloader = torch.utils.data.DataLoader(testset, batch_size=500,
 # nc=1
 
 device = torch.device("cuda:0" if opt.cuda else "cpu")
-# custom weights initialization called on netG and netD
+# custom weights initialization called on netG and netD.
+# Initializes conv layer weights from a normal distribution and BatchNorm weights near 1
+# which is wanted for GAN to prevent early training collapse.
 def weights_init(m):
     classname = m.__class__.__name__
     if classname.find('Conv') != -1:
@@ -130,19 +133,23 @@ def weights_init(m):
         m.weight.data.normal_(1.0, 0.02)
         m.bias.data.fill_(0)
 
+# Wraps the target model so it can be called the same way as a pytorch model.
+# It returns the hard class labels.
 def cal_azure(model, data):
     data = data.view(data.size(0), 784).cpu().numpy()
     output = model.predict(data)
     output = torch.from_numpy(output).cuda().long()
     return output
 
+# Wraps the target model so it can be called the same way as a pytorch model.
+# It returns the soft probability vectors used for the imitation loss. 
 def cal_azure_proba(model, data):
     data = data.view(data.size(0), 784).cpu().numpy()
     output = model.predict_proba(data)
     output = torch.from_numpy(output).cuda().float()
     return output
 
-
+# Loss generator
 class Loss_max(nn.Module):
     def __init__(self):
         super(Loss_max, self).__init__()
@@ -157,6 +164,7 @@ class Loss_max(nn.Module):
         final_loss = torch.exp(loss * -1)
         return final_loss
 
+# Maps raw noise into class conditioned feature maps
 class pre_conv(nn.Module):
     def __init__(self, num_class):
         super(pre_conv, self).__init__()
@@ -231,6 +239,8 @@ pre_conv_block = []
 for i in range (10):
     pre_conv_block.append(nn.DataParallel(pre_conv(10).cuda()))
 
+# Takes in class conditioned feature maps from pre_conv.
+# Refines them into a final synthetic MNIST image.
 class Generator(nn.Module):
     def __init__(self, num_class):
         super(Generator, self).__init__()
@@ -307,7 +317,7 @@ class Generator(nn.Module):
         output = self.main(input)
         return output
 
-
+# Splits the noise batch evenly.
 def chunks(arr, m):
     n = int(math.ceil(arr.size(0) / float(m)))
     return [arr[i:i + n] for i in range(0, arr.size(0), n)]

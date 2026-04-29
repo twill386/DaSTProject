@@ -1,3 +1,4 @@
+# Evaluation script for DaST. Tests a trained surrogate model by generating adversarial examples and measuring attack transferability against a black-box target.
 from __future__ import print_function
 import argparse
 import os
@@ -70,6 +71,8 @@ device = torch.device("cuda:0" if opt.cuda else "cpu")
 
 # L2 = foolbox.distances.MeanAbsoluteDistance()
 
+# Builds adversarial attaack using the substitute model of your choosing to make perturbations.
+# Evaluates the perturbations against the target model and gives back results on the attack performance.
 def test_adver(net, tar_net, attack, target):
     net.eval()
     tar_net.eval()
@@ -207,6 +210,9 @@ target_net.load_state_dict(state_dict)
 target_net = nn.DataParallel(target_net)
 target_net.eval()
 
+# Selects which model generates the adversarial examples.
+# I used mode dast when running test_dast so I simulate the actual
+# black box attack scenario
 if opt.mode == 'black':
     attack_net = Net_l().to(device)
     state_dict = torch.load(
