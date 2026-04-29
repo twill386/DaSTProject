@@ -14,7 +14,7 @@ The Authors provide attack code for two scenarios: **DaST-L** (label-only) and *
 4. Train a DaST substitute model using one of the commands in the **How to Run** section.
 5. Evaluate transfer attack performance with `evaluation.py` or `test_dast.py`.
 
-## How to Run Locally
+## How to Run
 
 **Train a DaST substitute against the MNIST target (DaST-P, 80 epochs):**
 ```bash
